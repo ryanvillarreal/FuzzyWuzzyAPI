@@ -3,7 +3,7 @@ package cli
 import (
 	// native Golang Support
 	"fmt"
-	"github.com/ryanvillarreal/Slackord/pkg/core"
+	"github.com/ryanvillarreal/FuzzyWuzzyAPI/cli/utils"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -17,7 +17,7 @@ import (
 
 // call the shell function here.
 func Shell(shellMenuContext string) {
-	rl, err := readline.New("/" + filepath.Base(core.CurrentDir) + ":~$ ")
+	rl, err := readline.New("/" + filepath.Base(utils.CurrentDir) + ":~$ [" + shellMenuContext + "] ")
 	if err != nil {
 		panic(err)
 	}
@@ -34,18 +34,24 @@ func Shell(shellMenuContext string) {
 		if len(cmd) > 0 {
 			// main CLI logic here.
 			switch shellMenuContext {
-			case "main":
+			case "Main", "main":
 				switch cmd[0] {
 				case "help":
-					menuHelpMain()
+					menuHelpMain(shellMenuContext)
 				case "?":
-					menuHelpMain()
-				case "exit":
+					menuHelpMain(shellMenuContext)
+				case "Burp", "burp":
+					Shell("Burp")
+				case "Manual", "manual":
+					Shell("Manual")
+				case "Proxy", "proxy":
+					Shell("Proxy")
+				case "exit", "Exit":
 					exit()
-				case "quit":
+				case "quit", "Quit":
 					exit()
-				case "menu":
-					menuHelpMain()
+				case "menu", "Menu":
+					menuHelpMain(shellMenuContext)
 				default:
 					message("info", "Executing system command...")
 					if len(cmd) > 1 {
@@ -55,12 +61,82 @@ func Shell(shellMenuContext string) {
 						executeCommand(cmd[0], x)
 					}
 				}
-			case "agent":
-				fmt.Println("You are operating on the agent side.")
-			case "module":
-				fmt.Println("You are inside the module menu")
-			case "listener":
-				fmt.Println("You are inside the listener menu")
+			case "Burp", "burp":
+				switch cmd[0] {
+				case "import", "Import":
+					if len(cmd) > 1 {
+						utils.BurpRequest(cmd[1])
+					} else {
+						color.Red("Pass the file here.")
+					}
+				case "help":
+					menuHelpBurp(shellMenuContext)
+				case "?":
+					menuHelpBurp(shellMenuContext)
+				case "exit":
+					exit()
+				case "quit":
+					exit()
+				case "menu":
+					menuHelpBurp(shellMenuContext)
+				case "back":
+					Shell("Main")
+				default:
+					message("info", "Executing system command...")
+					if len(cmd) > 1 {
+						executeCommand(cmd[0], cmd[1:])
+					} else {
+						var x []string
+						executeCommand(cmd[0], x)
+					}
+				}
+			case "Manual", "manual":
+				switch cmd[0] {
+				case "help":
+					menuHelpMain(shellMenuContext)
+				case "?":
+					menuHelpMain(shellMenuContext)
+				case "exit":
+					exit()
+				case "quit":
+					exit()
+				case "menu":
+					menuHelpMain(shellMenuContext)
+				case "back":
+					Shell("Main")
+				default:
+					message("info", "Executing system command...")
+					if len(cmd) > 1 {
+						executeCommand(cmd[0], cmd[1:])
+					} else {
+						var x []string
+						executeCommand(cmd[0], x)
+					}
+				}
+
+			case "Proxy", "proxy":
+				switch cmd[0] {
+				case "help":
+					menuHelpMain(shellMenuContext)
+				case "?":
+					menuHelpMain(shellMenuContext)
+				case "exit":
+					exit()
+				case "quit":
+					exit()
+				case "menu":
+					menuHelpMain(shellMenuContext)
+				case "back":
+					Shell("Main")
+				default:
+					message("info", "Executing system command...")
+					if len(cmd) > 1 {
+						executeCommand(cmd[0], cmd[1:])
+					} else {
+						var x []string
+						executeCommand(cmd[0], x)
+					}
+				}
 			}
 		}
 	}
@@ -106,17 +182,41 @@ func executeCommand(name string, arg []string) {
 }
 
 // prints the main menu when called. Can be used for help or any situation with a bad command line option
-func menuHelpMain() {
-	color.Yellow("Slackord - Help Menu")
+func menuHelpMain(context string) {
+	color.Yellow(context + " - Help Menu")
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetAlignment(tablewriter.ALIGN_LEFT)
 	table.SetBorder(false)
-	table.SetCaption(true, "Main Menu Help")
 	table.SetHeader([]string{"Command", "Description", "Options"})
 
 	data := [][]string{
-		{"exit", "Exit and close the Slackord server", ""},
-		{"quit", "Exit and close the Slackord server", ""},
+		{"Burp", "Enter the Burp context menu. You can use Burp parsing to open requests."},
+		{"Manual", "Manually define the GET/POST request to Fuzz the API"},
+		{"Load", "Load in new Payload lists to use with Fuzzing"},
+		{"Proxy", "Set the configuration to use a proxy server"},
+		{"exit", "Exit and close the FuzzyWuzzy server", ""},
+		{"quit", "Exit and close the FuzzyWuzzy server", ""},
+		{"*", "Anything else will be executed on the host operating system", ""},
+	}
+	table.AppendBulk(data)
+	fmt.Println()
+	table.Render()
+	fmt.Println()
+}
+
+func menuHelpBurp(context string) {
+	color.Yellow(context + " - Help Menu")
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetAlignment(tablewriter.ALIGN_LEFT)
+	table.SetBorder(false)
+	table.SetHeader([]string{"Command", "Description", "Options"})
+
+	data := [][]string{
+		{"Import", "Pass the name of the file into the import function"},
+		{"Proxy", "Set the configuration to use a proxy server"},
+		{"Back", "Return to the main menu"},
+		{"exit", "Exit and close the FuzzyWuzzy server", ""},
+		{"quit", "Exit and close the FuzzyWuzzy server", ""},
 		{"*", "Anything else will be executed on the host operating system", ""},
 	}
 	table.AppendBulk(data)

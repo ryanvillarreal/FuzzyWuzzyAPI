@@ -3,7 +3,7 @@ package main
 import "github.com/ryanvillarreal/FuzzyWuzzyAPI/cli"
 
 // Global Variables
-var shellMenuContext = "main"
+var shellMenuContext = "Main"
 
 func main() {
 	cli.Shell(shellMenuContext)
