@@ -3,7 +3,6 @@ package cli
 import (
 	// native Golang Support
 	"fmt"
-	"github.com/ryanvillarreal/FuzzyWuzzyAPI/cli/utils"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -13,6 +12,9 @@ import (
 	"github.com/chzyer/readline"
 	"github.com/fatih/color"
 	"github.com/olekukonko/tablewriter"
+
+	// Support Files
+	"github.com/ryanvillarreal/FuzzyWuzzyAPI/utils"
 )
 
 // call the shell function here.
@@ -46,6 +48,16 @@ func Shell(shellMenuContext string) {
 					Shell("Manual")
 				case "Proxy", "proxy":
 					Shell("Proxy")
+				case "Fuzz", "fuzz":
+					Shell("Fuzz")
+				case "Load", "load":
+					Shell("Load")
+				case "Interact", "interact":
+					if utils.CheckData() {
+						Shell("Interact")
+					} else {
+						fmt.Println("Data hasn't been loaded yet. ")
+					}
 				case "exit", "Exit":
 					exit()
 				case "quit", "Quit":
@@ -69,6 +81,8 @@ func Shell(shellMenuContext string) {
 					} else {
 						color.Red("Pass the file here.")
 					}
+				case "interact", "Interact":
+					Shell("Interact")
 				case "help":
 					menuHelpBurp(shellMenuContext)
 				case "?":
@@ -92,6 +106,8 @@ func Shell(shellMenuContext string) {
 				}
 			case "Manual", "manual":
 				switch cmd[0] {
+				case "interact", "Interact":
+					Shell("Interact")
 				case "help":
 					menuHelpMain(shellMenuContext)
 				case "?":
@@ -116,16 +132,22 @@ func Shell(shellMenuContext string) {
 
 			case "Proxy", "proxy":
 				switch cmd[0] {
+				case "interact", "Interact":
+					Shell("Interact")
+				case "Set", "set":
+					utils.SetProxy()
+				case "Unset", "unset":
+					utils.UnsetProxy()
 				case "help":
-					menuHelpMain(shellMenuContext)
+					menuHelpProxy(shellMenuContext)
 				case "?":
-					menuHelpMain(shellMenuContext)
+					menuHelpProxy(shellMenuContext)
 				case "exit":
 					exit()
 				case "quit":
 					exit()
 				case "menu":
-					menuHelpMain(shellMenuContext)
+					menuHelpProxy(shellMenuContext)
 				case "back":
 					Shell("Main")
 				default:
@@ -137,6 +159,45 @@ func Shell(shellMenuContext string) {
 						executeCommand(cmd[0], x)
 					}
 				}
+
+			case "Interact", "interact":
+				switch cmd[0] {
+				case "burp", "Burp":
+					Shell("Burp")
+				case "help":
+					menuHelpProxy(shellMenuContext)
+				case "?":
+					menuHelpProxy(shellMenuContext)
+				case "attribute", "Attribute":
+					if len(cmd) > 1 {
+						utils.PrintInfo(cmd[1])
+					} else {
+						color.Green("What information do you want to see?")
+					}
+				case "edit", "Edit":
+					if len(cmd) > 1 {
+						utils.EditInfo(cmd[1], cmd[2])
+					} else {
+						color.Green("What attribute do you want to edit?")
+					}
+				case "exit":
+					exit()
+				case "quit":
+					exit()
+				case "menu":
+					menuHelpProxy(shellMenuContext)
+				case "back":
+					Shell("Main")
+				default:
+					message("info", "Executing system command...")
+					if len(cmd) > 1 {
+						executeCommand(cmd[0], cmd[1:])
+					} else {
+						var x []string
+						executeCommand(cmd[0], x)
+					}
+				}
+
 			}
 		}
 	}
@@ -194,6 +255,8 @@ func menuHelpMain(context string) {
 		{"Manual", "Manually define the GET/POST request to Fuzz the API"},
 		{"Load", "Load in new Payload lists to use with Fuzzing"},
 		{"Proxy", "Set the configuration to use a proxy server"},
+		{"Interact", "Interact with the Data that has been loaded in."},
+		{"Fuzz", "Perform Fuzzing against the Data that has been loaded in."},
 		{"exit", "Exit and close the FuzzyWuzzy server", ""},
 		{"quit", "Exit and close the FuzzyWuzzy server", ""},
 		{"*", "Anything else will be executed on the host operating system", ""},
@@ -214,6 +277,27 @@ func menuHelpBurp(context string) {
 	data := [][]string{
 		{"Import", "Pass the name of the file into the import function"},
 		{"Proxy", "Set the configuration to use a proxy server"},
+		{"Back", "Return to the main menu"},
+		{"exit", "Exit and close the FuzzyWuzzy server", ""},
+		{"quit", "Exit and close the FuzzyWuzzy server", ""},
+		{"*", "Anything else will be executed on the host operating system", ""},
+	}
+	table.AppendBulk(data)
+	fmt.Println()
+	table.Render()
+	fmt.Println()
+}
+
+func menuHelpProxy(context string) {
+	color.Yellow(context + " - Help Menu")
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetAlignment(tablewriter.ALIGN_LEFT)
+	table.SetBorder(false)
+	table.SetHeader([]string{"Command", "Description", "Options"})
+
+	data := [][]string{
+		{"Set", "Configure the Proxy Settings for FuzzyWuzzy"},
+		{"Unset", "Unset the Proxy Settings for FuzzyWuzzy"},
 		{"Back", "Return to the main menu"},
 		{"exit", "Exit and close the FuzzyWuzzy server", ""},
 		{"quit", "Exit and close the FuzzyWuzzy server", ""},

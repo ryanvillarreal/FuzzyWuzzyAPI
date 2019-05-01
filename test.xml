@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE items [
+<!ELEMENT items (item*)>
+<!ATTLIST items burpVersion CDATA "">
+<!ATTLIST items exportTime CDATA "">
+<!ELEMENT item (time, url, host, port, protocol, method, path, extension, request, status, responselength, mimetype, response, comment)>
+<!ELEMENT time (#PCDATA)>
+<!ELEMENT url (#PCDATA)>
+<!ELEMENT host (#PCDATA)>
+<!ATTLIST host ip CDATA "">
+<!ELEMENT port (#PCDATA)>
+<!ELEMENT protocol (#PCDATA)>
+<!ELEMENT method (#PCDATA)>
+<!ELEMENT path (#PCDATA)>
+<!ELEMENT extension (#PCDATA)>
+<!ELEMENT request (#PCDATA)>
+<!ATTLIST request base64 (true|false) "false">
+<!ELEMENT status (#PCDATA)>
+<!ELEMENT responselength (#PCDATA)>
+<!ELEMENT mimetype (#PCDATA)>
+<!ELEMENT response (#PCDATA)>
+<!ATTLIST response base64 (true|false) "false">
+<!ELEMENT comment (#PCDATA)>
+]>
+<items burpVersion="2.0.20beta" exportTime="Tue Apr 30 17:22:08 UTC 2019">
+  <item>
+    <time>Tue Apr 30 15:02:07 UTC 2019</time>
+    <url><![CDATA[https://services.addons.mozilla.org/api/v3/addons/compat-override/?guid=foxyproxy%40eric.h.jung%2Cdefault-theme%40mozilla.org%2Cfirefox-compact-light%40mozilla.org%2Cfirefox-compact-dark%40mozilla.org&lang=en-US]]></url>
+    <host ip="52.35.75.151">services.addons.mozilla.org</host>
+    <port>443</port>
+    <protocol>https</protocol>
+    <method><![CDATA[GET]]></method>
+    <path><![CDATA[/api/v3/addons/compat-override/?guid=foxyproxy%40eric.h.jung%2Cdefault-theme%40mozilla.org%2Cfirefox-compact-light%40mozilla.org%2Cfirefox-compact-dark%40mozilla.org&lang=en-US]]></path>
+    <extension>null</extension>
+    <request base64="true"><![CDATA[R0VUIC9hcGkvdjMvYWRkb25zL2NvbXBhdC1vdmVycmlkZS8/Z3VpZD1mb3h5cHJveHklNDBlcmljLmguanVuZyUyQ2RlZmF1bHQtdGhlbWUlNDBtb3ppbGxhLm9yZyUyQ2ZpcmVmb3gtY29tcGFjdC1saWdodCU0MG1vemlsbGEub3JnJTJDZmlyZWZveC1jb21wYWN0LWRhcmslNDBtb3ppbGxhLm9yZyZsYW5nPWVuLVVTIEhUVFAvMS4xDQpIb3N0OiBzZXJ2aWNlcy5hZGRvbnMubW96aWxsYS5vcmcNClVzZXItQWdlbnQ6IE1vemlsbGEvNS4wIChYMTE7IExpbnV4IHg4Nl82NDsgcnY6NjYuMCkgR2Vja28vMjAxMDAxMDEgRmlyZWZveC82Ni4wDQpBY2NlcHQ6ICovKg0KQWNjZXB0LUxhbmd1YWdlOiBlbi1VUyxlbjtxPTAuNQ0KQWNjZXB0LUVuY29kaW5nOiBnemlwLCBkZWZsYXRlDQpDb25uZWN0aW9uOiBjbG9zZQ0KQ29va2llOiBfZ2E9R0ExLjIuMzcxNjU0NDY5LjE1NTM2MTEyNjENCg0K]]></request>
+    <status>200</status>
+    <responselength>1810</responselength>
+    <mimetype>JSON</mimetype>
+    <response base64="true"><![CDATA[SFRUUC8xLjEgMjAwIE9LDQpBbGxvdzogR0VULCBIRUFELCBPUFRJT05TDQpDb250ZW50LVNlY3VyaXR5LVBvbGljeTogc3R5bGUtc3JjICdzZWxmJyAndW5zYWZlLWlubGluZScgaHR0cHM6Ly9hZGRvbnMuY2RuLm1vemlsbGEubmV0OyBtZWRpYS1zcmMgaHR0cHM6Ly92aWRlb3MuY2RuLm1vemlsbGEubmV0OyBzY3JpcHQtc3JjIGh0dHBzOi8vc3NsLmdvb2dsZS1hbmFseXRpY3MuY29tL2dhLmpzIGh0dHBzOi8vd3d3Lmdvb2dsZS5jb20vcmVjYXB0Y2hhLyBodHRwczovL3d3dy5nc3RhdGljLmNvbS9yZWNhcHRjaGEvIGh0dHBzOi8vYWRkb25zLmNkbi5tb3ppbGxhLm5ldDsgaW1nLXNyYyAnc2VsZicgZGF0YTogYmxvYjogaHR0cHM6Ly9zc2wuZ29vZ2xlLWFuYWx5dGljcy5jb20gaHR0cHM6Ly9hZGRvbnMuY2RuLm1vemlsbGEubmV0IGh0dHBzOi8vc3RhdGljLmFkZG9ucy5tb3ppbGxhLm5ldCBodHRwczovL3NlbnRyeS5wcm9kLm1vemF3cy5uZXQ7IGRlZmF1bHQtc3JjICdzZWxmJzsgZnJhbWUtc3JjICdzZWxmJyBodHRwczovL3d3dy5nb29nbGUuY29tL3JlY2FwdGNoYS87IGNoaWxkLXNyYyAnc2VsZicgaHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS9yZWNhcHRjaGEvOyBmb3JtLWFjdGlvbiAnc2VsZicgaHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmc7IGNvbm5lY3Qtc3JjICdzZWxmJyBodHRwczovL3NlbnRyeS5wcm9kLm1vemF3cy5uZXQgaHR0cHM6Ly9hZGRvbnMuY2RuLm1vemlsbGEubmV0OyBiYXNlLXVyaSAnc2VsZicgaHR0cHM6Ly9hZGRvbnMubW96aWxsYS5vcmc7IGZvbnQtc3JjICdzZWxmJyBodHRwczovL2FkZG9ucy5jZG4ubW96aWxsYS5uZXQ7IG9iamVjdC1zcmMgJ25vbmUnOyByZXBvcnQtdXJpIC9fX2NzcHJlcG9ydF9fDQpDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2pzb24NCkRhdGU6IFR1ZSwgMzAgQXByIDIwMTkgMTU6MDI6MDcgR01UDQpFVGFnOiBXLyI5MTg3MGJkZTRmYzVjMGM0OGY4NmMwNjlhMmY1ZThmNSINClB1YmxpYy1LZXktUGluczogbWF4LWFnZT01MTg0MDAwOyBpbmNsdWRlU3ViRG9tYWluczsgcGluLXNoYTI1Nj0iV29pV1J5SU9WTmE5aWhhQmNpUlNDN1hIamxpWVM5VndVR09JdWQ0UEIxOD0iOyBwaW4tc2hhMjU2PSJyL21Ja0czZUVwVmRtK3Uva28vY3d4ek9NbzFiazRUeUhJbEJ5aWJpQTVFPSINClNlcnZlcjogbmdpbngNClN0cmljdC1UcmFuc3BvcnQtU2VjdXJpdHk6IG1heC1hZ2U9MzE1MzYwMDANClZhcnk6IE9yaWdpbiwgQWNjZXB0LUVuY29kaW5nDQpYLUFNTy1SZXF1ZXN0LUlEOiAwYmVkOWFhZmEyZTQ0ZDU3OGM3MmJkNjMxNzNhMzhhMQ0KWC1Db250ZW50LVR5cGUtT3B0aW9uczogbm9zbmlmZg0KWC1GcmFtZS1PcHRpb25zOiBERU5ZDQpYLVhTUy1Qcm90ZWN0aW9uOiAxOyBtb2RlPWJsb2NrDQpDb250ZW50LUxlbmd0aDogMzc0DQpDb25uZWN0aW9uOiBDbG9zZQ0KDQp7InBhZ2Vfc2l6ZSI6MjUsInBhZ2VfY291bnQiOjEsImNvdW50IjoxLCJuZXh0IjpudWxsLCJwcmV2aW91cyI6bnVsbCwicmVzdWx0cyI6W3siYWRkb25faWQiOjI0NjQsImFkZG9uX2d1aWQiOiJmb3h5cHJveHlAZXJpYy5oLmp1bmciLCJuYW1lIjoiRm94eVByb3h5IFN0YW5kYXJkIiwidmVyc2lvbl9yYW5nZXMiOlt7ImFkZG9uX21pbl92ZXJzaW9uIjoiMCIsImFkZG9uX21heF92ZXJzaW9uIjoiNC41LjUiLCJhcHBsaWNhdGlvbnMiOlt7Im5hbWUiOiJUaHVuZGVyYmlyZCIsImlkIjoxOCwibWluX3ZlcnNpb24iOiIzOC4wYTEiLCJtYXhfdmVyc2lvbiI6IioiLCJndWlkIjoiezM1NTBmNzAzLWU1ODItNGQwNS05YTA4LTQ1M2QwOWJkZmRjNn0ifV19XX1dfQ==]]></response>
+    <comment></comment>
+  </item>
+</items>
