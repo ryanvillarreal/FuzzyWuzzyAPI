@@ -21,7 +21,7 @@ import (
 func Shell(shellMenuContext string) {
 	rl, err := readline.New("/" + filepath.Base(utils.CurrentDir) + ":~$ [" + shellMenuContext + "] ")
 	if err != nil {
-		panic(err)
+		panic(err) // you should get rid of panics.  handle all the exceptions
 	}
 	defer rl.Close()
 
@@ -35,170 +35,103 @@ func Shell(shellMenuContext string) {
 
 		if len(cmd) > 0 {
 			// main CLI logic here.
-			switch shellMenuContext {
-			case "Main", "main":
-				switch cmd[0] {
-				case "help":
-					menuHelpMain(shellMenuContext)
-				case "?":
-					menuHelpMain(shellMenuContext)
-				case "Burp", "burp":
-					Shell("Burp")
-				case "Manual", "manual":
-					Shell("Manual")
-				case "Proxy", "proxy":
-					Shell("Proxy")
-				case "Fuzz", "fuzz":
-					Shell("Fuzz")
-				case "Load", "load":
-					Shell("Load")
-				case "Interact", "interact":
-					if utils.CheckData() {
-						Shell("Interact")
-					} else {
-						fmt.Println("Data hasn't been loaded yet. ")
-					}
-				case "exit", "Exit":
-					exit()
-				case "quit", "Quit":
-					exit()
-				case "menu", "Menu":
-					menuHelpMain(shellMenuContext)
-				default:
-					message("info", "Executing system command...")
-					if len(cmd) > 1 {
-						executeCommand(cmd[0], cmd[1:])
-					} else {
-						var x []string
-						executeCommand(cmd[0], x)
-					}
-				}
-			case "Burp", "burp":
-				switch cmd[0] {
-				case "import", "Import":
-					if len(cmd) > 1 {
-						utils.BurpRequest(cmd[1])
-					} else {
-						color.Red("Pass the file here.")
-					}
-				case "interact", "Interact":
-					Shell("Interact")
-				case "help":
-					menuHelpBurp(shellMenuContext)
-				case "?":
-					menuHelpBurp(shellMenuContext)
-				case "exit":
-					exit()
-				case "quit":
-					exit()
-				case "menu":
-					menuHelpBurp(shellMenuContext)
-				case "back":
-					Shell("Main")
-				default:
-					message("info", "Executing system command...")
-					if len(cmd) > 1 {
-						executeCommand(cmd[0], cmd[1:])
-					} else {
-						var x []string
-						executeCommand(cmd[0], x)
-					}
-				}
-			case "Manual", "manual":
-				switch cmd[0] {
-				case "interact", "Interact":
-					Shell("Interact")
-				case "help":
-					menuHelpMain(shellMenuContext)
-				case "?":
-					menuHelpMain(shellMenuContext)
-				case "exit":
-					exit()
-				case "quit":
-					exit()
-				case "menu":
-					menuHelpMain(shellMenuContext)
-				case "back":
-					Shell("Main")
-				default:
-					message("info", "Executing system command...")
-					if len(cmd) > 1 {
-						executeCommand(cmd[0], cmd[1:])
-					} else {
-						var x []string
-						executeCommand(cmd[0], x)
-					}
-				}
+			nav(shellMenuContext, cmd, rl)
+		}
+	}
+}
 
-			case "Proxy", "proxy":
-				switch cmd[0] {
-				case "interact", "Interact":
-					Shell("Interact")
-				case "Set", "set":
-					utils.SetProxy()
-				case "Unset", "unset":
-					utils.UnsetProxy()
-				case "help":
-					menuHelpProxy(shellMenuContext)
-				case "?":
-					menuHelpProxy(shellMenuContext)
-				case "exit":
-					exit()
-				case "quit":
-					exit()
-				case "menu":
-					menuHelpProxy(shellMenuContext)
-				case "back":
-					Shell("Main")
-				default:
-					message("info", "Executing system command...")
-					if len(cmd) > 1 {
-						executeCommand(cmd[0], cmd[1:])
-					} else {
-						var x []string
-						executeCommand(cmd[0], x)
-					}
-				}
+func nav(shellMenuContext string, cmd []string, rl *readline.Instance) {
+	switch cmd[0] {
 
-			case "Interact", "interact":
-				switch cmd[0] {
-				case "burp", "Burp":
-					Shell("Burp")
-				case "help":
-					menuHelpProxy(shellMenuContext)
-				case "?":
-					menuHelpProxy(shellMenuContext)
-				case "attribute", "Attribute":
-					if len(cmd) > 1 {
-						utils.PrintInfo(cmd[1])
-					} else {
-						color.Green("What information do you want to see?")
-					}
-				case "edit", "Edit":
-					if len(cmd) > 1 {
-						utils.EditInfo(cmd[1], cmd[2])
-					} else {
-						color.Green("What attribute do you want to edit?")
-					}
-				case "exit":
-					exit()
-				case "quit":
-					exit()
-				case "menu":
-					menuHelpProxy(shellMenuContext)
-				case "back":
-					Shell("Main")
-				default:
-					message("info", "Executing system command...")
-					if len(cmd) > 1 {
-						executeCommand(cmd[0], cmd[1:])
-					} else {
-						var x []string
-						executeCommand(cmd[0], x)
-					}
-				}
+	case "Import", "import":
+		shellMenuContext = "Import"
+		rl.SetPrompt("/" + filepath.Base(utils.CurrentDir) + ":~$ [" + shellMenuContext + "] ")
+		if len(cmd) > 1 {
+			utils.BurpRequest(cmd[1])
+		} else {
+			color.Red("Enter file name here.")
+		}
+		Shell("Main")
 
-			}
+	case "Swagger", "swagger":
+		color.Red("Not Implemented Yet")
+	case "Auth", "auth":
+		if len(cmd) > 1 {
+			utils.AddAuth(cmd[1])
+		} else {
+			color.Red("Add the Auth here.")
+		}
+	case "Manual", "manual":
+		shellMenuContext = "Manual"
+		rl.SetPrompt("/" + filepath.Base(utils.CurrentDir) + ":~$ [" + shellMenuContext + "] ")
+
+	case "Payload", "payload":
+		color.Red("Not Implemented yet")
+
+	case "Proxy", "proxy":
+		color.Green("Current Proxy: " + utils.PROXY_ADDR)
+
+	case "View", "view":
+		if len(cmd) > 1 {
+			utils.PrintInfo(cmd[1])
+		} else {
+			color.Red("Use the View options and the attribute name")
+		}
+	case "Edit", "edit", "change", "Change":
+		if len(cmd) > 2 {
+			utils.EditInfo(cmd[1], cmd[2])
+		} else {
+			color.Red("Use the Edit command to change attribute data")
+		}
+
+	case "List", "list":
+		utils.PrintInfo("all")
+
+	case "Set", "set":
+		if len(cmd) > 1 {
+			utils.SetProxy(cmd[1])
+		} else {
+			color.Red("Specify address for Proxy support")
+		}
+	case "Unset", "unset":
+		if len(cmd) > 1 {
+			color.Red("No data needed.")
+		} else {
+			utils.UnsetProxy()
+		}
+
+	case "Test", "test":
+		utils.Request()
+
+	case "Fuzz", "fuzz":
+		shellMenuContext = "Fuzz"
+		rl.SetPrompt("/" + filepath.Base(utils.CurrentDir) + ":~$ [" + shellMenuContext + "] ")
+
+	case "Stats", "stats":
+		color.Red("Not Implemented yet")
+
+	case "Output", "output":
+		color.Red("not Implemented Yet")
+	// Standard Operations
+	case "exit", "Exit":
+		exit()
+	case "quit", "Quit":
+		exit()
+	case "menu", "Menu":
+		menuHelpMain(shellMenuContext)
+	case "help":
+		menuHelpMain(shellMenuContext)
+	case "?":
+		menuHelpMain(shellMenuContext)
+	case "back", "Back":
+		Shell("Main")
+	default:
+		message("info", "Executing system command...")
+		if len(cmd) > 1 {
+			executeCommand(cmd[0], cmd[1:])
+		} else {
+			var x []string
+			executeCommand(cmd[0], x)
 		}
 	}
 }
@@ -251,54 +184,22 @@ func menuHelpMain(context string) {
 	table.SetHeader([]string{"Command", "Description", "Options"})
 
 	data := [][]string{
-		{"Burp", "Enter the Burp context menu. You can use Burp parsing to open requests."},
+		{"Import", "Import a Burp Request", "<filename>"},
+		{"Swagger", "Parse Swagger Documentation for further automation of API testing."},
+		{"Auth", "Add an Auth payload into the request."},
 		{"Manual", "Manually define the GET/POST request to Fuzz the API"},
-		{"Load", "Load in new Payload lists to use with Fuzzing"},
+		{"Payload", "Load in new Payload lists to use with Fuzzing"},
 		{"Proxy", "Set the configuration to use a proxy server"},
-		{"Interact", "Interact with the Data that has been loaded in."},
-		{"Fuzz", "Perform Fuzzing against the Data that has been loaded in."},
-		{"exit", "Exit and close the FuzzyWuzzy server", ""},
-		{"quit", "Exit and close the FuzzyWuzzy server", ""},
-		{"*", "Anything else will be executed on the host operating system", ""},
-	}
-	table.AppendBulk(data)
-	fmt.Println()
-	table.Render()
-	fmt.Println()
-}
-
-func menuHelpBurp(context string) {
-	color.Yellow(context + " - Help Menu")
-	table := tablewriter.NewWriter(os.Stdout)
-	table.SetAlignment(tablewriter.ALIGN_LEFT)
-	table.SetBorder(false)
-	table.SetHeader([]string{"Command", "Description", "Options"})
-
-	data := [][]string{
-		{"Import", "Pass the name of the file into the import function"},
-		{"Proxy", "Set the configuration to use a proxy server"},
-		{"Back", "Return to the main menu"},
-		{"exit", "Exit and close the FuzzyWuzzy server", ""},
-		{"quit", "Exit and close the FuzzyWuzzy server", ""},
-		{"*", "Anything else will be executed on the host operating system", ""},
-	}
-	table.AppendBulk(data)
-	fmt.Println()
-	table.Render()
-	fmt.Println()
-}
-
-func menuHelpProxy(context string) {
-	color.Yellow(context + " - Help Menu")
-	table := tablewriter.NewWriter(os.Stdout)
-	table.SetAlignment(tablewriter.ALIGN_LEFT)
-	table.SetBorder(false)
-	table.SetHeader([]string{"Command", "Description", "Options"})
-
-	data := [][]string{
+		{"View", "Interact with the Data that has been loaded in.", "view [attribute]"},
+		{"Edit", "Edit the Data that has been loaded in.", "edit [attribute] [change]"},
+		{"Change", "Same as edit parameter.", "change [attribute] [change]"},
+		{"List", "List the attributes available from the Data that has been loaded"},
 		{"Set", "Configure the Proxy Settings for FuzzyWuzzy"},
 		{"Unset", "Unset the Proxy Settings for FuzzyWuzzy"},
-		{"Back", "Return to the main menu"},
+		{"Test", "Test the current data in a Request.  Will return the response code. "},
+		{"Fuzz", "Perform Fuzzing against the Data that has been loaded in."},
+		{"Stats", "Get current stats of Requests/Responses"},
+		{"Output", "Output results to a self-define location", "output [filename]"},
 		{"exit", "Exit and close the FuzzyWuzzy server", ""},
 		{"quit", "Exit and close the FuzzyWuzzy server", ""},
 		{"*", "Anything else will be executed on the host operating system", ""},

@@ -1,9 +1,7 @@
 package utils
 
 import (
-	"encoding/base64"
 	"encoding/xml"
-	"fmt"
 	"github.com/fatih/color"
 	"io/ioutil"
 	"net/http"
@@ -41,7 +39,7 @@ func BurpRequest(filename string) {
 		color.Green("Finished Importing...")
 
 	default:
-		fmt.Println("Unknown File Type, Burp exports Requests as XML.")
+		color.Red("Unknown File Type, Burp exports Requests as XML.")
 	}
 }
 
@@ -101,23 +99,6 @@ func GetFileContentType(out *os.File) (string, error) {
 	return contentType, nil
 }
 
-//func Base64Decode(payload string) (decoded string, err string) {
-//	decoded, err := base64.StdEncoding.DecodeString(payload)
-//	if err != nil {
-//		fmt.Println("error:", err)
-//		return nil, err
-//	}
-//	// change this to do something with the decoded data later
-//	return decoded, err
-//}
-
-func Base64Encode(payload string) {
-	data := []byte(payload)
-	str := base64.StdEncoding.EncodeToString(data)
-	// change this to do something with the encode data later
-	fmt.Println(str)
-}
-
 func CheckData() (check bool) {
 	if &data == nil {
 		color.Red("Data Hasn't been loaded yet.")
@@ -166,10 +147,12 @@ func PrintInfo(attribute string) {
 		color.Green(data.Item.Responselength)
 	case "mime":
 		color.Green(data.Item.Mimetype)
-	//case "response":
-	//	color.Green(Base64Decode(data.Item.Response.Text))
-	//case "request":
-	//	color.Green(Base64Decode(data.Item.Request.Text))
+	case "response":
+		color.Red("Hasn't been implemented Yet")
+		color.Green(data.Item.Response.Text)
+	case "request":
+		color.Red("Hasn't ben implemented Yet")
+		color.Green(data.Item.Request.Text)
 	case "comment":
 		color.Green(data.Item.Comment)
 	default:
@@ -179,5 +162,57 @@ func PrintInfo(attribute string) {
 }
 
 func EditInfo(attribute string, change string) {
-	fmt.Println("Changing data: " + attribute + " to: " + change)
+	switch attribute {
+	case "time":
+		color.Red("Export time is Static.")
+	case "url":
+		data.Item.Host.Text = change
+		color.Yellow(data.Item.Host.Text)
+	case "host":
+		data.Item.Host.Text = change
+		color.Yellow(data.Item.Host.Text)
+	case "ip":
+		data.Item.Host.Ip = change
+		color.Yellow(data.Item.Host.Ip)
+	case "port":
+		data.Item.Port = change
+		color.Yellow(data.Item.Port)
+	case "protocol":
+		data.Item.Protocol = change
+		color.Yellow(data.Item.Protocol)
+	case "method":
+		data.Item.Method = change
+		color.Yellow(data.Item.Method)
+	case "path":
+		data.Item.Path = change
+		color.Yellow(data.Item.Path)
+	case "extension":
+		data.Item.Extension = change
+		color.Yellow(data.Item.Extension)
+	case "status":
+		color.Red("Response Status is Static.")
+	case "length":
+		color.Red("Response Length is Static.")
+	case "mime":
+		data.Item.Extension = change
+		color.Yellow(data.Item.Mimetype)
+	case "response":
+		color.Red("Response Payload is Static.")
+	case "request":
+		color.Red("Hasn't been implemented yet.")
+		color.Yellow(data.Item.Request.Text)
+	case "comment":
+		data.Item.Comment = change
+		color.Yellow(data.Item.Comment)
+	default:
+		color.Red("The attribute provided was not found.")
+	}
+
+}
+
+func AddAuth(auth string) {
+	color.Red("Decode the Payload, add the auth string, and then re-encode")
+	// temp := base64decode(data.Item.Request.Text)
+	// temp = temp + auth string
+	// data.Item.Request.Text = temp
 }

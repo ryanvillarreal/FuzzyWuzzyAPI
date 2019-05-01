@@ -1,11 +1,18 @@
 package utils
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/fatih/color"
+)
 
-func pause() {
+func Pause() {
 	fmt.Println("You should be able to pause using interactive commands")
 }
 
-func resume() {
+func Resume() {
 	fmt.Println("You should be able to resume using interactive commands")
+}
+
+func Request() {
+	color.Green("making a request")
 }
