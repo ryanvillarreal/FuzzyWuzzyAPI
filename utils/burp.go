@@ -216,3 +216,8 @@ func AddAuth(auth string) {
 	// temp = temp + auth string
 	// data.Item.Request.Text = temp
 }
+
+func Manual() {
+	// while there are not two empty lines continual ask for Input from the user.
+
+}

@@ -101,15 +101,19 @@ func nav(shellMenuContext string, cmd []string, rl *readline.Instance) {
 		}
 
 	case "Test", "test":
-		utils.Request()
+		utils.MakeRequest()
 
 	case "Fuzz", "fuzz":
 		shellMenuContext = "Fuzz"
 		rl.SetPrompt("/" + filepath.Base(utils.CurrentDir) + ":~$ [" + shellMenuContext + "] ")
-
+	case "Pause", "pause":
+		color.Red("Not Implemented Yet")
+	case "Resume", "resume":
+		color.Red("Not Implemented Yet")
 	case "Stats", "stats":
 		color.Red("Not Implemented yet")
-
+	case "Stop", "stop":
+		color.Red("Not Implemented Yet")
 	case "Output", "output":
 		color.Red("not Implemented Yet")
 	// Standard Operations
@@ -198,6 +202,9 @@ func menuHelpMain(context string) {
 		{"Unset", "Unset the Proxy Settings for FuzzyWuzzy"},
 		{"Test", "Test the current data in a Request.  Will return the response code. "},
 		{"Fuzz", "Perform Fuzzing against the Data that has been loaded in."},
+		{"Pause", "Pause the current attacks."},
+		{"Resume", "Resume the current attacks"},
+		{"Stop", "Stop the current attacks"},
 		{"Stats", "Get current stats of Requests/Responses"},
 		{"Output", "Output results to a self-define location", "output [filename]"},
 		{"exit", "Exit and close the FuzzyWuzzy server", ""},
