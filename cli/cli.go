@@ -68,6 +68,13 @@ func nav(shellMenuContext string, cmd []string, rl *readline.Instance) {
 	case "Payload", "payload":
 		color.Red("Not Implemented yet")
 
+	case "Download", "download":
+		if len(cmd) > 1 {
+			utils.DownloadPayloads(cmd[1])
+		} else {
+			utils.DownloadPayloads("./SecLists.zip")
+		}
+
 	case "Proxy", "proxy":
 		color.Green("Current Proxy: " + utils.PROXY_ADDR)
 
@@ -167,9 +174,7 @@ func exit() {
 // execute a local command from inside the CLI
 func executeCommand(name string, arg []string) {
 	var cmd *exec.Cmd
-
 	cmd = exec.Command(name, arg...)
-
 	out, err := cmd.CombinedOutput()
 
 	if err != nil {
@@ -193,6 +198,7 @@ func menuHelpMain(context string) {
 		{"Auth", "Add an Auth payload into the request."},
 		{"Manual", "Manually define the GET/POST request to Fuzz the API"},
 		{"Payload", "Load in new Payload lists to use with Fuzzing"},
+		{"Download", "Download the SecLists from Daniel Miessler", "download | download [filepath"},
 		{"Proxy", "Set the configuration to use a proxy server"},
 		{"View", "Interact with the Data that has been loaded in.", "view [attribute]"},
 		{"Edit", "Edit the Data that has been loaded in.", "edit [attribute] [change]"},

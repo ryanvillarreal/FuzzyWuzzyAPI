@@ -40,9 +40,13 @@ func MakeRequest() {
 			color.Red(err.Error())
 		}
 
-		//// call the request.
+		// call the request.
 		resp, err := client.Do(req)
-		color.Green(resp.Status)
+		if err != nil {
+			color.Red(err.Error())
+		} else {
+			color.Green(resp.Status)
+		}
 
 	} else {
 		// exclude the Proxy Settings so that it doesn't break the request.
@@ -63,7 +67,11 @@ func MakeRequest() {
 
 		//// call the request.
 		resp, err := client.Do(req)
-		color.Green(resp.Status)
+		if err != nil {
+			color.Red(err.Error())
+		} else {
+			color.Green(resp.Status)
+		}
 	}
 }
 
