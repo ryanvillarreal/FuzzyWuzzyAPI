@@ -17,7 +17,7 @@ Building from Go.  Follow the insturctions online to setup Golang in your enviro
 then `go get github.com/ryanvillarreal/FuzzyWuzzyAPI`.  Once the package has been downloaded
 you should be able to `cd ~/go/github/ryanvillarreal/FuzzyWuzzy && go build FuzzyWuzzyAPI`
 
-
+## Phase 1.0
 ### Current To-Do List:
 * ~~cli~~
 * ~~Basic Request~~
@@ -38,5 +38,5 @@ you should be able to `cd ~/go/github/ryanvillarreal/FuzzyWuzzy && go build Fuzz
 * Statisitics
 * ~~Add Banner... because why not?~~
 
-### Phase 2.0
+## Phase 2.0
 Refactor code to be more modular/easy to debug
