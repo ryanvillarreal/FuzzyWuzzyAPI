@@ -36,7 +36,7 @@ you should be able to `cd ~/go/github/ryanvillarreal/FuzzyWuzzy && go build Fuzz
 * Swagger Parsing/Setup
 * Progress Saving
 * Statisitics
-* ~~Add Banner... because why not? ~~
+* ~~Add Banner... because why not?~~
 
 ### Phase 2.0
 Refactor code to be more modular/easy to debug
