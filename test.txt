@@ -1,2 +1,6 @@
 Hello, World
 This file type is not accepted by FuzzyWuzzy
+<script>alert(1);</script>
+<xss>
+Stuff
+Here.

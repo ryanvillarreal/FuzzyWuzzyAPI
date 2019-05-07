@@ -1,5 +1,8 @@
 package utils
 
+// Pulled from Go-Humanize.  Thanks for the help with converting unit16 to Bytes!
+// https://github.com/dustin/go-humanize
+
 import (
 	"fmt"
 	"math"

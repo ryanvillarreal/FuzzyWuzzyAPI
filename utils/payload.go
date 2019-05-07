@@ -2,19 +2,47 @@ package utils
 
 import (
 	"archive/zip"
+	"bufio"
 	"fmt"
 	"github.com/fatih/color"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 )
 
-// import the Payload files here.
-func LoadPayloads() {
+// define the global array for Payloads
+var payloads []string
 
+func Unload() {
+	payloads = nil
+	color.Green("Total Payloads: " + PrintPayloadLen())
+}
+
+// import the Payload files here.
+func LoadPayloads(filename string) {
+	color.Yellow("Loading file: " + filename)
+	file, err := os.Open(filename)
+	if err != nil {
+		color.Red(err.Error())
+	} else {
+		defer file.Close()
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+			payloads = append(payloads, scanner.Text())
+		}
+	}
+	color.Green("Total Payloads: " + PrintPayloadLen())
+}
+
+func PrintPayloadLen() (length string) {
+	return strconv.Itoa(len(payloads))
+}
+
+func GetPayloadLen() (length int) {
+	return len(payloads)
 }
 
 // WriteCounter counts the number of bytes written to it. It implements to the io.Writer
@@ -37,13 +65,10 @@ func (wc WriteCounter) PrintProgress() {
 	fmt.Printf("\r%s", strings.Repeat(" ", 35))
 
 	// Return again and print current status of download
-	fmt.Printf("\rDownloading.. %s complete", Bytes(wc.Total))
+	color.Green("\rDownloading.. %s complete", Bytes(wc.Total))
 }
 
-func DownloadPayloads(filepath string) {
-	// easy button for Users to Download Daniel Miessler's SecLists
-	var url string = "https://github.com/danielmiessler/SecLists/archive/master.zip"
-
+func DownloadPayloads(filepath string, url string) {
 	// Create the file, but give it a tmp file extension, this means we won't overwrite a
 	// file until it's downloaded, but we'll remove the tmp extension once downloaded.
 	out, err := os.Create(filepath)
@@ -74,13 +99,14 @@ func DownloadPayloads(filepath string) {
 	Unzip(filepath)
 }
 
+// Function to unzip the contents of the recently downloaded files.
 func Unzip(file string) {
 	zipReader, _ := zip.OpenReader(file)
 	for _, file := range zipReader.Reader.File {
 
 		zippedFile, err := file.Open()
 		if err != nil {
-			log.Fatal(err)
+			color.Red(err.Error())
 		}
 		defer zippedFile.Close()
 
@@ -91,10 +117,10 @@ func Unzip(file string) {
 		)
 
 		if file.FileInfo().IsDir() {
-			log.Println("Directory Created:", extractedFilePath)
+			color.Green("Directory Created:", extractedFilePath)
 			os.MkdirAll(extractedFilePath, file.Mode())
 		} else {
-			log.Println("File extracted:", file.Name)
+			color.Green("File extracted:" + file.Name)
 
 			outputFile, err := os.OpenFile(
 				extractedFilePath,
@@ -102,16 +128,14 @@ func Unzip(file string) {
 				file.Mode(),
 			)
 			if err != nil {
-				log.Fatal(err)
+				color.Red(err.Error())
 			}
 			defer outputFile.Close()
 
 			_, err = io.Copy(outputFile, zippedFile)
 			if err != nil {
-				log.Fatal(err)
+				color.Red(err.Error())
 			}
 		}
 	}
 }
-
-// maybe an option to download additional payloads or paste them?

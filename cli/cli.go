@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	// Third-Party Support
@@ -47,7 +48,7 @@ func nav(shellMenuContext string, cmd []string, rl *readline.Instance) {
 		shellMenuContext = "Import"
 		rl.SetPrompt("/" + filepath.Base(utils.CurrentDir) + ":~$ [" + shellMenuContext + "] ")
 		if len(cmd) > 1 {
-			utils.BurpRequest(cmd[1])
+			utils.BurpImport(cmd[1])
 		} else {
 			color.Red("Enter file name here.")
 		}
@@ -65,14 +66,21 @@ func nav(shellMenuContext string, cmd []string, rl *readline.Instance) {
 		shellMenuContext = "Manual"
 		rl.SetPrompt("/" + filepath.Base(utils.CurrentDir) + ":~$ [" + shellMenuContext + "] ")
 
-	case "Payload", "payload":
-		color.Red("Not Implemented yet")
+	case "Load", "load":
+		if len(cmd) > 1 {
+			utils.LoadPayloads(cmd[1])
+		} else {
+			color.Red("Need to specify the file name to load.")
+		}
+
+	case "Unload", "unload":
+		utils.Unload()
 
 	case "Download", "download":
 		if len(cmd) > 1 {
-			utils.DownloadPayloads(cmd[1])
+			utils.DownloadPayloads(cmd[1], cmd[2])
 		} else {
-			utils.DownloadPayloads("./SecLists.zip")
+			utils.DownloadPayloads("./SecLists.zip", "https://github.com/danielmiessler/SecLists/archive/master.zip")
 		}
 
 	case "Proxy", "proxy":
@@ -89,8 +97,9 @@ func nav(shellMenuContext string, cmd []string, rl *readline.Instance) {
 			utils.EditInfo(cmd[1], cmd[2])
 		} else {
 			color.Red("Use the Edit command to change attribute data")
-		}
+			color.Red("Available properties: url, ip, host, port, protocol, method, path, extension, mime, comment, user agent")
 
+		}
 	case "List", "list":
 		utils.PrintInfo("all")
 
@@ -106,10 +115,21 @@ func nav(shellMenuContext string, cmd []string, rl *readline.Instance) {
 		} else {
 			utils.UnsetProxy()
 		}
-
 	case "Test", "test":
-		utils.MakeRequest()
-
+		utils.SingleRequest()
+	case "Threads", "threads":
+		if len(cmd) > 1 {
+			i, err := strconv.Atoi(cmd[1])
+			if err != nil {
+				color.Red("Something went wrong.")
+			} else {
+				utils.SetThreads(i)
+			}
+		} else {
+			color.Yellow("Number of Threads Set: " + utils.GetThreads())
+		}
+	case "Attack", "attack":
+		utils.Attack()
 	case "Fuzz", "fuzz":
 		shellMenuContext = "Fuzz"
 		rl.SetPrompt("/" + filepath.Base(utils.CurrentDir) + ":~$ [" + shellMenuContext + "] ")
@@ -197,7 +217,8 @@ func menuHelpMain(context string) {
 		{"Swagger", "Parse Swagger Documentation for further automation of API testing."},
 		{"Auth", "Add an Auth payload into the request."},
 		{"Manual", "Manually define the GET/POST request to Fuzz the API"},
-		{"Payload", "Load in new Payload lists to use with Fuzzing"},
+		{"Load", "Load in new Payload lists to use with Fuzzing"},
+		{"Unload", "Unload the payloads set previously."},
 		{"Download", "Download the SecLists from Daniel Miessler", "download | download [filepath"},
 		{"Proxy", "Set the configuration to use a proxy server"},
 		{"View", "Interact with the Data that has been loaded in.", "view [attribute]"},
@@ -206,7 +227,9 @@ func menuHelpMain(context string) {
 		{"List", "List the attributes available from the Data that has been loaded"},
 		{"Set", "Configure the Proxy Settings for FuzzyWuzzy"},
 		{"Unset", "Unset the Proxy Settings for FuzzyWuzzy"},
+		{"Attack", "Perform the attack with the current settings."},
 		{"Test", "Test the current data in a Request.  Will return the response code. "},
+		{"Threads", "Limit the Attacker to a number of threads.  Default 5.", "threads [int]"},
 		{"Fuzz", "Perform Fuzzing against the Data that has been loaded in."},
 		{"Pause", "Pause the current attacks."},
 		{"Resume", "Resume the current attacks"},

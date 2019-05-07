@@ -11,7 +11,8 @@ import (
 // define global variables
 var data Items
 
-func BurpRequest(filename string) {
+//
+func BurpImport(filename string) {
 	file, err := os.Open(filename) // For read access.
 	if err != nil {
 		color.Red(err.Error())
@@ -43,12 +44,14 @@ func BurpRequest(filename string) {
 	}
 }
 
-// Issues discovered by Burp
+// Structure created using the online XML parser
+// https://www.onlinetool.io/xmltogo/
 type Items struct {
 	XMLName     xml.Name `xml:"items"`
 	Text        string   `xml:",chardata"`
 	BurpVersion string   `xml:"burpVersion,attr"`
 	ExportTime  string   `xml:"exportTime,attr"`
+	UserAgent   string   `xml:"useragent,attr"`
 
 	Item struct {
 		Text string `xml:",chardata"`
@@ -207,6 +210,9 @@ func EditInfo(attribute string, change string) {
 	default:
 		color.Red("The attribute provided was not found.")
 	}
+}
+
+func DefineInsertions() {
 
 }
 
