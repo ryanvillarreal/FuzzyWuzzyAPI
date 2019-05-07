@@ -3,7 +3,7 @@ Fuzzing APIs with Go
 
 
 This project is meant to provide a interactive console that will allow for the automation of API testing.  
-Mainly because I am lazy and want to automate my job. 
+Mainly because I am lazy and want to automate my testing. 
 
 
 ### Why Golang?
@@ -25,10 +25,10 @@ you should be able to `cd ~/go/github/ryanvillarreal/FuzzyWuzzy && go build Fuzz
 * ~~Loading Burp Request~~
 * ~~Editing current requests~~
 * ~~Viewing current requests~~
-* Payload loading
+* ~~Payload loading~~
 * Payload adding/saving
-* Attacking
-* Multi-Threading
+* ~~Attacking~~
+* ~~Multi-Threading~~ ...Sorta
 * Further HTTP/HTTP2 Configuration
 * Logging
 * Verbose Error Messages
@@ -36,7 +36,7 @@ you should be able to `cd ~/go/github/ryanvillarreal/FuzzyWuzzy && go build Fuzz
 * Swagger Parsing/Setup
 * Progress Saving
 * Statisitics
-
+* ~~Add Banner... because why not? ~~
 
 ### Phase 2.0
 Refactor code to be more modular/easy to debug
