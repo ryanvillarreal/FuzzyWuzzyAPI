@@ -1,9 +1,9 @@
 # FuzzyWuzzyAPI
 Fuzzing APIs with Go
 
-# No longer using Golang for this project.  making the code public so I can talk about expierence I have with Golang. 
+## No longer using Golang for this project.  making the code public so I can talk about expierence I have with Golang. 
 
-# Golang will not allow for illegal characters to be sent over HTTP requests.  Which is the entire reason for this project. I could build a raw socket function that could send illegal characters, but it wouldn't be supported on Windows natively without including adittional drivers.  Therefore, it defeats the purpose of the project. 
+## Golang will not allow for illegal characters to be sent over HTTP requests.  Which is the entire reason for this project. I could build a raw socket function that could send illegal characters, but it wouldn't be supported on Windows natively without including adittional drivers.  Therefore, it defeats the purpose of the project. 
 
 
 This project is meant to provide a interactive console that will allow for the automation of API testing.  
